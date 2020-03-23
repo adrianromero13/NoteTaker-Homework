@@ -2,21 +2,24 @@ const express = require('express');
 
 const path = require('path');
 const app = express();
+const addRequestId = require('express-request-id')();
 
-// If we are in production (Heroku), process.env.PORT is true, 
-// If we are in development it is false, default to 3000
+
+app.use(addRequestId);
+app.use(express.json());
+app.use(express.urlencoded({ extended: true}));
+
+// If we are in prod (Heroku), process.env.PORT is true,
+// otherwise default to PORT 3000
 const PORT = process.env.PORT || 3000;
 
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+const routes = require('./routes');
 
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'index.html'));
-});
+app.use(routes);
 
-
-
+// this gets all files inside public folder
 app.use(express.static('public'));
 
-app.listen(PORT, () => console.log(`Server started on PORT ${PORT}`));
+//this gets the server started and logs the server (PORT) defined above
+app.listen(PORT, () => console.log(`Sever started on PORT ${PORT}`));
