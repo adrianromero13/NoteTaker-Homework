@@ -1,4 +1,4 @@
-const router = require('exprees').Router();
+const router = require('express').Router();
 
 const htmlController = require('./../../controllers/htmlController')
 
